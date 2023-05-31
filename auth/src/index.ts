@@ -1,12 +1,18 @@
 import express from "express";
 import { json } from "body-parser";
 
+import { currentUserRouter } from "./routers/current-user.router";
+import { signinRouter } from "./routers/signin.router";
+import { signupRouter } from "./routers/signup.router";
+import { signoutRouter } from "./routers/signout.router";
+
 const app = express();
 app.use(json());
 
-app.get("/api/users/:value", (req, res) => {
-  res.send("Hi there");
-});
+app.use(currentUserRouter);
+app.use(signinRouter);
+app.use(signupRouter);
+app.use(signoutRouter);
 
 app.get("*", (req, res) => {
   console.log("this is reached");
