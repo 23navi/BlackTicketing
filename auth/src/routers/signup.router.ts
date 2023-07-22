@@ -2,6 +2,9 @@ import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 const router = express.Router();
 
+import { DBConnectionError } from "../errors/db-connection-error";
+import { RequestValidationError } from "../errors/req-validation-error";
+
 router.post(
   "/api/users/signup",
   [
@@ -18,7 +21,7 @@ router.post(
 
       //Sync route -> throw
       // return next(errors);
-      throw new Error("This is the custom error");
+      throw new RequestValidationError(errors.array());
     }
 
     res.send("Hi there!, All clear");
