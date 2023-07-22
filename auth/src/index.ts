@@ -2,6 +2,8 @@ import express from "express";
 import { json } from "body-parser";
 import mongoose from "mongoose";
 
+import "express-async-errors";
+
 import { currentUserRouter } from "./routers/current-user.router";
 import { signinRouter } from "./routers/signin.router";
 import { signupRouter } from "./routers/signup.router";
