@@ -2,8 +2,9 @@ import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 const router = express.Router();
 
-import { DBConnectionError } from "../errors/db-connection-error";
+// import { DBConnectionError } from "../errors/db-connection-error";
 import { RequestValidationError } from "../errors/req-validation-error";
+import { BadRequestError } from "../errors/bad-request-error";
 
 import { User } from "../models/user";
 
@@ -29,7 +30,7 @@ router.post(
     const existingUser = await User.findOne({ email: req.body.email });
     if (existingUser) {
       console.log("User already exists");
-      return res.status(400).send({ error: "User already exists" });
+      throw new BadRequestError("User already exists");
     }
 
     const user = User.build({
