@@ -6,6 +6,8 @@ import { signinRouter } from "./routers/signin.router";
 import { signupRouter } from "./routers/signup.router";
 import { signoutRouter } from "./routers/signout.router";
 
+import { errorHandler } from "./middleware/error-handler";
+
 const app = express();
 app.use(json());
 
@@ -13,6 +15,7 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(signoutRouter);
+app.use(errorHandler);
 
 app.get("*", (req, res) => {
   console.log("this is reached");
