@@ -10,7 +10,7 @@ import { signinRouter } from "./routers/signin.router";
 import { signupRouter } from "./routers/signup.router";
 import { signoutRouter } from "./routers/signout.router";
 
-import { errorHandler } from "./middleware/error-handler";
+import { errorHandler } from "./middlewares/error-handler";
 import { RouteNotFoundError } from "./errors/route-not-found-error";
 
 const app = express();
@@ -31,6 +31,9 @@ app.all("*", (req, res) => {
 app.use(errorHandler);
 
 const startup = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY must be defined");
+  }
   try {
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("Connected to MongoDB");
