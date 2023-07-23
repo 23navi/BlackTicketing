@@ -20,7 +20,6 @@ router.post(
   ],
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
-    console.log("input: ", req.body);
     if (!errors.isEmpty()) {
       // return res.status(400).send(errors.array());   // We will not be handling the error on our own in each route. we will just call the error handler (if route is sync -> throw . If the route is async -> next(err))
 
@@ -45,7 +44,7 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      "key"
+      process.env.JWT_KEY!
     );
 
     req.session = {
