@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import { Password } from "../services/password";
+
 interface userModel extends mongoose.Model<any> {
   build(attrs: userAttrs): userDocument;
 }
@@ -25,6 +27,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+
+userSchema.pre("save", async function (done) {
+  if (this.isModified("password")) {
+    const hashedPasssword = await Password.toHash(this.get("password"));
+    this.set("password", hashedPasssword);
+  }
+  done();
 });
 
 userSchema.statics.build = (attrs: userAttrs) => {
