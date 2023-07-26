@@ -1,5 +1,6 @@
 apiVersion: skaffold/v4beta1
 kind: Config
+## Old way of doing it.. New way is below with rawYaml:...
 # deploy:
 #   kubectl:
 #     manifests:
@@ -16,6 +17,15 @@ build:
         manual:
           - dest: "src/**/*.ts"
             src: .
+
+    - image: navi23/blackticket-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
 manifests:
   rawYaml:
     - ./infra/k8s/*
