@@ -4,6 +4,8 @@ import { app } from "../app";
 
 let mongo: any;
 beforeAll(async () => {
+  // We are setting up the key here. Not the best way but it will work.
+  process.env.JWT_KEY = "abc";
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
   await mongoose.connect(mongoUri);
