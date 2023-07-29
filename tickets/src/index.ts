@@ -8,7 +8,7 @@ const start = async () => {
   }
 
   try {
-    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth"); //will update this
+    await mongoose.connect("mongodb://tickets-mongo-srv:27017/auth");
 
     console.log("Ticket Service: Connected to MongoDb");
   } catch (err) {
