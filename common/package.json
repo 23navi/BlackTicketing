@@ -8,7 +8,9 @@
     "build/**/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clean && tsc",
+    "clean": "del ./build",
+    "pub": "git add . && git commit -m \"common:Update\" && npm version patch && npm publish"
   },
   "author": "",
   "license": "ISC",
