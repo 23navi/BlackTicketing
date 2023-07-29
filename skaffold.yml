@@ -18,7 +18,7 @@ build:
           - dest: "src/**/*.ts"
             src: .
 
-    - image: rallycoding/ticketing-client
+    - image: navi23/blackticket-client
       context: client
       docker:
         dockerfile: Dockerfile

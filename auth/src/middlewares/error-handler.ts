@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { CustomError } from "../errors/CustomError";
+import { Request, Response, NextFunction } from 'express';
+import { CustomError } from '../errors/custom-error';
 
 export const errorHandler = (
   err: Error,
@@ -11,6 +11,7 @@ export const errorHandler = (
     return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
 
-  console.log(err);
-  return res.status(400).send("Some errorHandler error");
+  res.status(400).send({
+    errors: [{ message: 'Something went wrong' }]
+  });
 };
