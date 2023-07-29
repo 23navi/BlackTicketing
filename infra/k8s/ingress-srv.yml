@@ -24,4 +24,3 @@ spec:
                 name: client-srv
                 port:
                   number: 3000
-## Whenever we get a request on our fake website name -> balckticket.dev... with the path of /api/users/:anything... We route it to http://auth-srv:3000 -> http://auth-srv:3000/api/users/:anything

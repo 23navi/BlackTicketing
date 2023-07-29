@@ -1,19 +1,22 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+import { Password } from '../services/password';
 
-import { Password } from "../services/password";
-
-interface userModel extends mongoose.Model<any> {
-  build(attrs: userAttrs): userDocument;
-}
-
-interface userDocument extends mongoose.Document {
+// An interface that describes the properties
+// that are requried to create a new User
+interface UserAttrs {
   email: string;
   password: string;
-  // createdAt:string,
-  // updatedAt:string,
 }
 
-interface userAttrs {
+// An interface that describes the properties
+// that a User Model has
+interface UserModel extends mongoose.Model<UserDoc> {
+  build(attrs: UserAttrs): UserDoc;
+}
+
+// An interface that describes the properties
+// that a User Document has
+interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
 }
@@ -22,41 +25,37 @@ const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      requierd: true,
+      required: true
     },
     password: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   {
     toJSON: {
       transform(doc, ret) {
-        delete ret.password;
-        delete ret.__v;
         ret.id = ret._id;
         delete ret._id;
-      },
-    },
+        delete ret.password;
+        delete ret.__v;
+      }
+    }
   }
 );
 
-userSchema.pre("save", async function (done) {
-  if (this.isModified("password")) {
-    const hashedPasssword = await Password.toHash(this.get("password"));
-    this.set("password", hashedPasssword);
+userSchema.pre('save', async function(done) {
+  if (this.isModified('password')) {
+    const hashed = await Password.toHash(this.get('password'));
+    this.set('password', hashed);
   }
   done();
 });
 
-userSchema.statics.build = (attrs: userAttrs) => {
-  // how are we refering to User before defining it? User depends on userSchema and we are using User inisde userSchema?
+userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
-const User = mongoose.model<userDocument, userModel>("User", userSchema);
+const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
 export { User };
-
-///To create new user..
-// const user = User.build({ email: "navi@gmail.com", password: "password" });
