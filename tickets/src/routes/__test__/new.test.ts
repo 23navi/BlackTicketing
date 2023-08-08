@@ -1,6 +1,8 @@
 import request from "supertest";
 import { app } from "../../app";
 
+import { Ticket } from "../../model/ticket";
+
 it("has a route handler listening to /api/tickets for post requests", async () => {
   const response = await request(app).post("/api/tickets").send({});
   expect(response.status).not.toEqual(404);
@@ -8,7 +10,6 @@ it("has a route handler listening to /api/tickets for post requests", async () =
 it("can only be accessed if the user is signed in", async () => {
   const response = await request(app).post("/api/tickets").send({}).expect(401);
 });
-
 it("returns a status other than 401 if the user is signed in", async () => {
   const response = await request(app)
     .post("/api/tickets")
@@ -56,7 +57,8 @@ it("returns an error if an invalid price is provided", async () => {
     .set("Cookie", global.signin())
     .send({
       title: "abc",
-      price: "15",
+      // Here "15" is working even "15" is string and our expressValidator only allows float... Auto type convertion?
+      price: "15a",
     })
     .expect(400);
   await request(app)
@@ -68,4 +70,24 @@ it("returns an error if an invalid price is provided", async () => {
     })
     .expect(400);
 });
-it("create a ticket with valid inputs", () => {});
+it("create a ticket with valid inputs", async () => {
+  // Number of tickets in db should be 0 on start
+  let tickets = await Ticket.find({});
+  expect(tickets.length).toEqual(0);
+
+  // Creating a new ticket
+  const res = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      title: "abc",
+      price: 15,
+    })
+    .expect(201);
+
+  console.log(res);
+
+  // Number of tickets in db should be 1 after the ticket is created
+  tickets = await Ticket.find({});
+  expect(tickets.length).toEqual(1);
+});
