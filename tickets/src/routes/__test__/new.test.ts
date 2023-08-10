@@ -85,8 +85,6 @@ it("create a ticket with valid inputs", async () => {
     })
     .expect(201);
 
-  console.log(res);
-
   // Number of tickets in db should be 1 after the ticket is created
   tickets = await Ticket.find({});
   expect(tickets.length).toEqual(1);
