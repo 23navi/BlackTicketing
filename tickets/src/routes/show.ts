@@ -3,6 +3,7 @@ import {
   requireAuth,
   validateRequest,
   BadRequestError,
+  NotFoundError,
 } from "@23navi/btcommon";
 import { Ticket } from "../model/ticket";
 import { param } from "express-validator";
@@ -18,7 +19,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) {
-      throw new BadRequestError("Ticket not found");
+      throw new NotFoundError();
     }
 
     res.send(ticket);
