@@ -14,7 +14,10 @@ const router = express.Router();
 
 router.get(
   "/api/tickets/:id",
-  [param("id").not().isEmpty().withMessage("Ticket ID is required")],
+  [
+    param("id").not().isEmpty().withMessage("Ticket ID is required"),
+    param("id").isMongoId().withMessage("Ticket ID is invalid"),
+  ],
   validateRequest,
   async (req: Request, res: Response, next: NextFunction) => {
     const ticket = await Ticket.findById(req.params.id);

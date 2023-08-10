@@ -3,12 +3,7 @@ import "express-async-errors";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
-import {
-  errorHandler,
-  NotFoundError,
-  requireAuth,
-  currentUser,
-} from "@23navi/btcommon";
+import { errorHandler, NotFoundError, currentUser } from "@23navi/btcommon";
 
 import { createTicketRouter } from "./routes/new";
 import { showTicketRouter } from "./routes/show";

@@ -88,4 +88,8 @@ it("create a ticket with valid inputs", async () => {
   // Number of tickets in db should be 1 after the ticket is created
   tickets = await Ticket.find({});
   expect(tickets.length).toEqual(1);
+  expect(tickets[0].price).toEqual(15);
+  expect(tickets[0].title).toEqual("abc");
+  expect(tickets[0].id).toBeDefined();
+  expect(tickets[0].userId).toBeDefined();
 });
