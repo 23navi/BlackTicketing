@@ -1,11 +1,13 @@
 import { Message, Stan, SubscriptionOptions } from "node-nats-streaming";
 
-export abstract class BaseListener {
+import IEvent from "./Event";
+
+export abstract class BaseListener<T extends IEvent> {
   // private client: Stan;
-  public abstract subject: string;
+  public abstract subject: T["subject"];
   public abstract queueGroupName: string;
 
-  protected abstract onMessage(data: any, msg: Message): void;
+  protected abstract onMessage(data: T["data"], msg: Message): void;
 
   constructor(private client: Stan) {}
 
