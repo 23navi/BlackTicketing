@@ -1,6 +1,6 @@
 {
   "name": "@23navi/btcommon",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

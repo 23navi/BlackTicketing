@@ -1,6 +1,6 @@
 import IEvent from "./Event";
 import { Subjects } from "./subjects";
-export default interface ITicketCreatedEvent extends IEvent {
+export interface ITicketCreatedEvent extends IEvent {
   subject: Subjects.TicketCreated;
   data: {
     id: string;
