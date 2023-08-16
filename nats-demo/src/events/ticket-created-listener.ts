@@ -1,8 +1,8 @@
-import { BaseListener } from "./base-listener";
+import { BaseListener } from "@23navi/btcommon";
 
 import { Message } from "node-nats-streaming";
-import ITicketCreatedEvent from "./ticket-created-event";
-import { Subjects } from "./subjects";
+import { ITicketCreatedEvent } from "@23navi/btcommon";
+import { Subjects } from "@23navi/btcommon";
 
 export class TicketCreatedListener extends BaseListener<ITicketCreatedEvent> {
   subject: ITicketCreatedEvent["subject"] = Subjects.TicketCreated;
