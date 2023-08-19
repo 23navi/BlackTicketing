@@ -18,7 +18,9 @@ stan.on("connect", async () => {
 
   const publisher = new TicketCreatedPublisher(stan);
   try {
+    console.log("this is running");
     await publisher.publish(data);
+    console.log("this is also runnings");
   } catch (err) {
     console.error(err);
   }

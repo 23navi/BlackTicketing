@@ -23,18 +23,27 @@ router.post(
   validateRequest, // To catch and throw errors caused by expressValidator
   async (req: Request, res: Response) => {
     const { title, price } = req.body;
+
     const ticket = Ticket.build({
       title,
       price,
       userId: req.currentUser!.id,
     });
+
     await ticket.save();
-    await new TicketCreatedPublisher(natsWrapper.client).publish({
-      id: "234",
-      price: 34,
-      title: "abc",
-      userId: "2343",
-    });
+
+    try {
+      await new TicketCreatedPublisher(natsWrapper.client).publish({
+        id: "234",
+        price: 34,
+        title: "abc",
+        userId: "2343",
+      });
+    } catch (err) {
+      console.log("Something went wrong from tickets/new");
+      console.log(err);
+    }
+
     res.status(201).send(ticket);
   }
 );

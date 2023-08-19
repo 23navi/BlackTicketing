@@ -6,6 +6,7 @@ import { Ticket } from "../model/ticket";
 const router = express.Router();
 
 router.get("/api/tickets", async (req: Request, res: Response) => {
+  console.log("Hello from list tickets");
   const tickets = await Ticket.find({});
   res.send(tickets);
 });
