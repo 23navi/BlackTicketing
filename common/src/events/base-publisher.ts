@@ -11,24 +11,12 @@ export abstract class BasePublisher<T extends IEvent> {
 
   publish(data: T["data"]): Promise<string> {
     return new Promise((resolve, reject) => {
-      // this.client.publish(this.subject, JSON.stringify(data), (err) => {
-      //   resolve("h");
-      //   if (err) {
-      //     reject(err);
-      //   } else {
-      //     console.log("Event published");
-      //     resolve("Message published");
-      //   }
-      // });
-
-      return new Promise((resolve, reject) => {
-        this.client.publish(this.subject, JSON.stringify(data), (err) => {
-          if (err) {
-            return reject(err);
-          }
-          console.log("Event published to subject", this.subject);
-          resolve("abc");
-        });
+      this.client.publish(this.subject, JSON.stringify(data), (err) => {
+        if (err) {
+          return reject(err);
+        }
+        console.log("Event published to subject", this.subject);
+        resolve("abc");
       });
     });
   }
