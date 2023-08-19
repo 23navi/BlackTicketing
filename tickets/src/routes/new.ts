@@ -33,12 +33,14 @@ router.post(
     await ticket.save();
 
     try {
+      console.log("This here is working fine befor async to TicketCreated");
       await new TicketCreatedPublisher(natsWrapper.client).publish({
-        id: "234",
-        price: 34,
-        title: "abc",
-        userId: "2343",
+        id: ticket.id,
+        price: ticket.price,
+        title: ticket.title,
+        userId: ticket.userId,
       });
+      console.log("This here is working fine");
     } catch (err) {
       console.log("Something went wrong from tickets/new");
       console.log(err);

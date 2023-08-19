@@ -12,7 +12,7 @@ export class TicketCreatedListener extends BaseListener<ITicketCreatedEvent> {
 
   onMessage(data: ITicketCreatedEvent["data"], msg: Message) {
     console.log(data);
-    console.log(typeof data);
+    console.log(data["id"]);
 
     msg.ack();
   }
