@@ -34,9 +34,9 @@ export abstract class BaseListener<T extends IEvent> {
     });
   }
 
-  parseMessage(msg: Message): string {
+  parseMessage(msg: Message) {
     if (typeof msg.getData() === "string") {
-      return msg.getData() as string;
+      return JSON.parse(msg.getData() as string);
     }
     return JSON.parse(msg.getData().toString("utf-8"));
   }
