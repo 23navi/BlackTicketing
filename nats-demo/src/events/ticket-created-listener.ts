@@ -11,7 +11,8 @@ export class TicketCreatedListener extends BaseListener<ITicketCreatedEvent> {
   queueGroupName = "payments-service";
 
   onMessage(data: ITicketCreatedEvent["data"], msg: Message) {
-    console.log("Event data!", data.id);
+    console.log(data);
+    console.log(data["id"]);
 
     msg.ack();
   }

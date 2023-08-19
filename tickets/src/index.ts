@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import { natsWrapper } from "./nats-wrapper";
+
 import { app } from "./app";
 
 const start = async () => {
@@ -12,7 +14,26 @@ const start = async () => {
 
     console.log("Ticket Service: Connected to MongoDb");
   } catch (err) {
+    console.log("Cannot connect to MongoDb from Tickets service");
     console.error(err);
+  }
+  try {
+    await natsWrapper.connect(
+      "ticketing",
+      "ajlfkjslkfj",
+      "http://nats-srv:4222"
+    );
+    console.log("Ticket Service: Connected to Nats");
+    natsWrapper.client.on("close", () => {
+      console.log("Nats connection closed in Ticket Service");
+      process.exit();
+    });
+
+    process.on("SIGINT", () => natsWrapper.client.close());
+    process.on("SIGTERM", () => natsWrapper.client.close());
+  } catch (err) {
+    console.log("Cannot connect to Nats in Ticket Service");
+    // console.error(err);
   }
 
   app.listen(3000, () => {
