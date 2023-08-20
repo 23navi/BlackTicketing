@@ -8,6 +8,8 @@ import {
 } from "@23navi/btcommon";
 import { Ticket } from "../model/ticket";
 import { param, body } from "express-validator";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -48,6 +50,20 @@ router.put(
     ticket.set({ ...ticket, title, price });
 
     await ticket.save();
+
+    try {
+      console.log("This here is working fine befor async to TicketUpdated");
+      await new TicketUpdatedPublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        price: ticket.price,
+        title: ticket.title,
+        userId: ticket.userId,
+      });
+      console.log("This here is working fine after async to TicketUpdated");
+    } catch (err) {
+      console.log("Something went wrong from tickets/update");
+      console.log(err);
+    }
 
     res.send(ticket);
   }
