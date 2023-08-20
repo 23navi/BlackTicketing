@@ -40,7 +40,7 @@ router.post(
         title: ticket.title,
         userId: ticket.userId,
       });
-      console.log("This here is working fine");
+      console.log("This here is working fine after async to TicketCreated");
     } catch (err) {
       console.log("Something went wrong from tickets/new");
       console.log(err);
