@@ -1,16 +1,13 @@
 import mongoose from "mongoose";
 import { orderStatus } from "@23navi/btcommon";
+import { TicketDoc } from "./ticket";
 
-// An interface that describes the properties
-// that are requried to create a new Ticket
 interface OrderAttrs {
   userId: string;
   status: orderStatus;
   expiresAt: Date;
 }
 
-// An interface that describes the properties
-// that a Ticket Document has ... we can have mongo created properties too.. eg createdAt
 interface OrderDoc extends mongoose.Document {
   userId: string;
   status: orderStatus;
@@ -18,8 +15,6 @@ interface OrderDoc extends mongoose.Document {
   ticket: TicketDoc;
 }
 
-// An interface that describes the properties
-// that a Ticket Model has
 interface OrderModel extends mongoose.Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc;
 }
