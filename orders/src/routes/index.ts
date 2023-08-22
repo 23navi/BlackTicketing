@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
   //Only return the orders for the current use
-  const orders = Order.find({
+  const orders = await Order.find({
     userId: req.currentUser!.id,
   }).populate("ticket");
   return res.send(orders);
