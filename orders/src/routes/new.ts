@@ -25,7 +25,7 @@ router.post(
       .isEmpty()
       // Problem with this validation check for id being mongoose.. We got some dependency as we are saying that ticket id will be always a mongodb id.. ie: Ticket service will always have mongodb as the database..
       .custom((input) => {
-        mongoose.Types.ObjectId.isValid(input);
+        return mongoose.Types.ObjectId.isValid(input);
       })
       .withMessage("TicketId must be provided"),
   ],

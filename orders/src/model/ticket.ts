@@ -39,10 +39,6 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
-ticketSchema.statics.build = (attrs: TicketAttrs) => {
-  return new Ticket(attrs);
-};
-
 ticketSchema.methods.isReserved = async function () {
   // this.ticket will give us the ticket on which this .isReserved is called...
 
@@ -52,6 +48,10 @@ ticketSchema.methods.isReserved = async function () {
     status: { $ne: orderStatus.Cancelled },
   });
   return orders.length > 0;
+};
+
+ticketSchema.statics.build = (attrs: TicketAttrs) => {
+  return new Ticket(attrs);
 };
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", ticketSchema);

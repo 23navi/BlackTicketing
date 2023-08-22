@@ -20,14 +20,15 @@ app.use(
 );
 app.use(currentUser);
 
+app.use(createOrderRouter);
+app.use(indexOrderRouter);
+app.use(showOrderRouter);
+app.use(deleteOrderRouter);
+
 app.all("*", async (req, res) => {
+  console.log("This is running from orders *");
   throw new NotFoundError();
 });
-
-app.use(createOrderRouter);
-app.use(showOrderRouter);
-app.use(indexOrderRouter);
-app.use(deleteOrderRouter);
 
 app.use(errorHandler);
 
