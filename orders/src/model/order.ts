@@ -1,10 +1,11 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
+import { orderStatus } from "@23navi/btcommon";
 
 // An interface that describes the properties
 // that are requried to create a new Ticket
 interface OrderAttrs {
   userId: string;
-  status: string;
+  status: orderStatus;
   expiresAt: Date;
 }
 
@@ -12,7 +13,7 @@ interface OrderAttrs {
 // that a Ticket Document has ... we can have mongo created properties too.. eg createdAt
 interface OrderDoc extends mongoose.Document {
   userId: string;
-  status: string;
+  status: orderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
 }
@@ -32,6 +33,8 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
+      enum: Object.values(orderStatus),
+      default: orderStatus.Created,
     },
     userId: {
       type: String,
