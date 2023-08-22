@@ -65,12 +65,11 @@ router.post(
       userId: req.currentUser!.id,
       ticket,
     });
-
     await order.save();
 
     // 5) Publishing an event saying that an order was created
 
-    return {};
+    return res.send({});
   }
 );
 
