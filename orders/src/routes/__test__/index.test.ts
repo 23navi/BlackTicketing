@@ -2,7 +2,6 @@ import request from "supertest";
 import { app } from "../../app";
 
 import { Ticket } from "../../model/ticket";
-import { Order } from "../../model/order";
 
 // helper function to create a ticket
 
