@@ -1,13 +1,13 @@
 import express, { Request, Response } from "express";
 import {
   requireAuth,
-  validateRequest,
   NotFoundError,
   NotAuthorizedError,
   orderStatus,
 } from "@23navi/btcommon";
 import { param } from "express-validator";
 import { natsWrapper } from "../nats-wrapper";
+import { OrderCancelledPublisher } from "../events/order-cancelled-publisher";
 import { Order } from "../model/order";
 
 const router = express.Router();
@@ -29,6 +29,22 @@ router.delete(
 
     order.status = orderStatus.Cancelled;
     await order.save();
+
+    // 5) Publishing an event saying that an order was created
+
+    try {
+      console.log("This here is working fine befor async to OrderCancelled");
+      await new OrderCancelledPublisher(natsWrapper.client).publish({
+        id: order.id,
+        ticket: {
+          id: order.ticket.id,
+        },
+      });
+      console.log("This here is working fine after async to OrderCancelled");
+    } catch (err) {
+      console.log("Something went wrong from order/delete");
+      // console.log(err);
+    }
 
     return res.status(202).send(order);
   }

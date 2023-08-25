@@ -1,6 +1,6 @@
 import { BasePublisher, Subjects } from "@23navi/btcommon";
-import { OrderCancelledEvent } from "@23navi/btcommon";
+import { OrderCreatedEvent } from "@23navi/btcommon";
 
-export class TicketCreatedPublisher extends BasePublisher<OrderCancelledEvent> {
-  readonly subject = Subjects.OrderCancelled;
+export class OrderCreatedPublisher extends BasePublisher<OrderCreatedEvent> {
+  readonly subject = Subjects.OrderCreated;
 }
