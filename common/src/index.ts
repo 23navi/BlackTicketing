@@ -20,3 +20,5 @@ export * from "./events/ticket-created-event";
 export * from "./events/ticket-updated-event";
 export * from "./events/Event";
 export * from "./events/types/order-status.enum";
+export * from "./events/order-cancelled-event";
+export * from "./events/order-created-event";
