@@ -9,6 +9,7 @@ import {
 } from "@23navi/btcommon";
 import { body } from "express-validator";
 import { natsWrapper } from "../nats-wrapper";
+import { OrderCreatedPublisher } from "../events/order-created-publisher";
 import { Ticket } from "../model/ticket";
 import { Order } from "../model/order";
 
@@ -68,6 +69,24 @@ router.post(
     await order.save();
 
     // 5) Publishing an event saying that an order was created
+
+    try {
+      console.log("This here is working fine befor async to OrderCreated");
+      await new OrderCreatedPublisher(natsWrapper.client).publish({
+        id: order.id,
+        ticket: {
+          id: ticket.id,
+          price: ticket.price,
+        },
+        expiresAt: order.expiresAt.toISOString(),
+        userId: order.userId,
+        status: orderStatus.Created, // Why order.status is not working??
+      });
+      console.log("This here is working fine after async to OrderCreated");
+    } catch (err) {
+      console.log("Something went wrong from order/new");
+      // console.log(err);
+    }
 
     return res.status(201).send(order);
   }
