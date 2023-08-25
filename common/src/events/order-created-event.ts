@@ -1,6 +1,7 @@
 import { Subjects } from "./subjects";
 import { orderStatus } from "./types/order-status.enum";
 
+// update the OrderCreatedEvent interface to name to IOrderCreatedEvent
 export interface OrderCreatedEvent {
   subject: Subjects.OrderCreated;
   data: {
