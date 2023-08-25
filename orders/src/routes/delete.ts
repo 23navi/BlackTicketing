@@ -7,7 +7,7 @@ import {
 } from "@23navi/btcommon";
 import { param } from "express-validator";
 import { natsWrapper } from "../nats-wrapper";
-import { OrderCancelledPublisher } from "../events/order-cancelled-publisher";
+import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
 import { Order } from "../model/order";
 
 const router = express.Router();
