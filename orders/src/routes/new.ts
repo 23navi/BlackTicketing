@@ -9,7 +9,7 @@ import {
 } from "@23navi/btcommon";
 import { body } from "express-validator";
 import { natsWrapper } from "../nats-wrapper";
-import { OrderCreatedPublisher } from "../events/order-created-publisher";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 import { Ticket } from "../model/ticket";
 import { Order } from "../model/order";
 
