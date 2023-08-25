@@ -5,6 +5,7 @@ import { Ticket } from "../../model/ticket";
 import { Order } from "../../model/order";
 import { orderStatus } from "@23navi/btcommon";
 import mongoose from "mongoose";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("should work!", () => {});
 
@@ -54,4 +55,17 @@ it("create a new order", async () => {
   //     .expect(201);
 });
 
-it.todo("emits an order created event");
+it("emits an order created event", async () => {
+  const ticket = await Ticket.build({
+    title: "concert",
+    price: 20,
+  }).save();
+
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", global.signin())
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
