@@ -2,7 +2,6 @@ import express, { NextFunction, Request, Response } from "express";
 import {
   requireAuth,
   validateRequest,
-  BadRequestError,
   NotFoundError,
   NotAuthorizedError,
 } from "@23navi/btcommon";
@@ -58,6 +57,7 @@ router.put(
         price: ticket.price,
         title: ticket.title,
         userId: ticket.userId,
+        version: ticket.version,
       });
       console.log("This here is working fine after async to TicketUpdated");
     } catch (err) {
