@@ -39,6 +39,7 @@ router.post(
         price: ticket.price,
         title: ticket.title,
         userId: ticket.userId,
+        version: ticket.version,
       });
       console.log("This here is working fine after async to TicketCreated");
     } catch (err) {
