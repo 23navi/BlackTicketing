@@ -68,7 +68,7 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
   });
 };
 
-ticketSchema.statics.build = (data: { id: string; version: number }) => {
+ticketSchema.statics.findByEvent = (data: { id: string; version: number }) => {
   return Ticket.findOne({
     _id: data.id,
     version: data.version - 1,
