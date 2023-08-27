@@ -10,6 +10,7 @@ export class TicketUpdatedListener extends BaseListener<ITicketUpdatedEvent> {
 
   async onMessage(data: ITicketUpdatedEvent["data"], msg: Message) {
     const ticket = await Ticket.findByEvent(data);
+    console.log({ ticket });
     if (!ticket) {
       // throw new Error("Ticket not found");   //This is making the service disconnect with NATS and then nothing will work?? //WTF is this... process.exit() is not restarting the service too!!!
 
@@ -19,7 +20,8 @@ export class TicketUpdatedListener extends BaseListener<ITicketUpdatedEvent> {
 
     const { title, price } = data;
     ticket!.set({ title, price });
-    await ticket!.save();
+    console.log("Ran till here");
+    // await ticket!.save();
 
     msg.ack();
     console.log("Ticket updated in orders services");
