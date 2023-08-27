@@ -1,6 +1,7 @@
 import { orderStatus } from "@23navi/btcommon";
 import mongoose from "mongoose";
 import { Order } from "./order";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 interface TicketAttrs {
   id: string;
@@ -11,6 +12,7 @@ interface TicketAttrs {
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 
@@ -39,6 +41,9 @@ const ticketSchema = new mongoose.Schema(
     },
   }
 );
+
+ticketSchema.set("versionKey", "version");
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.methods.isReserved = async function () {
   // this.ticket will give us the ticket on which this .isReserved is called...

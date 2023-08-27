@@ -9,15 +9,23 @@ export class TicketUpdatedListener extends BaseListener<ITicketUpdatedEvent> {
   queueGroupName = QUEUEGROUPNAME;
 
   async onMessage(data: ITicketUpdatedEvent["data"], msg: Message) {
-    console.log("Event data on Update! ", data);
-    const ticket = await Ticket.findOne({ id: data.id });
+    const ticket = await Ticket.findOne({
+      _id: data.id,
+      version: data.version - 1,
+    });
+
     if (!ticket) {
-      return new Error("Ticket not found");
+      // throw new Error("Ticket not found");   //This is making the service disconnect with NATS and then nothing will work?? //WTF is this... process.exit() is not restarting the service too!!!
+
+      console.log("This ticket was not processed and skipped");
+      return;
     }
+
     const { title, price } = data;
-    ticket.set({ title, price });
-    ticket.save();
+    ticket!.set({ title, price });
+    await ticket!.save();
 
     msg.ack();
+    console.log("Ticket updated in orders services");
   }
 }

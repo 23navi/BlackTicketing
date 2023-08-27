@@ -74,6 +74,7 @@ router.post(
       console.log("This here is working fine befor async to OrderCreated");
       await new OrderCreatedPublisher(natsWrapper.client).publish({
         id: order.id,
+        version: order.version,
         ticket: {
           id: ticket.id,
           price: ticket.price,
