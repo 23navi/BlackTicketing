@@ -36,6 +36,7 @@ router.delete(
       console.log("This here is working fine befor async to OrderCancelled");
       await new OrderCancelledPublisher(natsWrapper.client).publish({
         id: order.id,
+        version: order.version,
         ticket: {
           id: order.ticket.id,
         },

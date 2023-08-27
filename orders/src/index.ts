@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import "express-async-errors";
 
 import { natsWrapper } from "./nats-wrapper";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
@@ -40,7 +41,7 @@ const start = async () => {
     console.log("Orders Service: Connected to Nats");
     natsWrapper.client.on("close", () => {
       console.log("Nats connection closed in Orders Service");
-      process.exit();
+      process.exit(1);
     });
 
     process.on("SIGINT", () => natsWrapper.client.close());
@@ -51,7 +52,7 @@ const start = async () => {
     new TicketUpdatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.log("Cannot connect to Nats in Orders Service");
-    // console.error(err);
+    process.exit(1);
   }
 
   app.listen(3000, () => {
