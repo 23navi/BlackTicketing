@@ -11,7 +11,7 @@ it("implements optimistic concurrency control", async () => {
 
   // save it to db
 
-  ticket.save();
+  await ticket.save();
 
   // fetch the ticket twice * ticket 1 and ticket 2 -> both being the same instance of ticket
 
@@ -32,7 +32,14 @@ it("implements optimistic concurrency control", async () => {
   ticket2!.set({ price: 15 });
 
   // save the second ticket -> should fail because the version number is different
-  await ticket2?.save();
+  // expect(async () => {
+  //   console.log(await ticket2?.save());
+  // }).toThrow();
 
-  console.log("Running the ticket test");
+  try {
+    await ticket2?.save();
+  } catch (err) {
+    return;
+  }
+  throw new Error("Should not reach this point");
 });
