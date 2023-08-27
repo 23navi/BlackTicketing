@@ -25,8 +25,6 @@ it("implements optimistic concurrency control", async () => {
   // save the first ticket -> should work fine and update the version number
   await ticket1?.save();
 
-  console.log({ ticket1 });
-
   // Make a change to second ticket
 
   ticket2!.set({ price: 15 });
@@ -42,4 +40,19 @@ it("implements optimistic concurrency control", async () => {
     return;
   }
   throw new Error("Should not reach this point");
+});
+
+it("increments the version number on multiple saves", async () => {
+  const ticket = Ticket.build({
+    price: 50,
+    title: "test_ticket",
+    userId: "123",
+  });
+
+  await ticket.save();
+  expect(ticket.version).toEqual(0);
+  await ticket.save();
+  expect(ticket.version).toEqual(1);
+  await ticket.save();
+  expect(ticket.version).toEqual(2);
 });
