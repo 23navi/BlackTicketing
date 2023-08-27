@@ -9,11 +9,7 @@ export class TicketUpdatedListener extends BaseListener<ITicketUpdatedEvent> {
   queueGroupName = QUEUEGROUPNAME;
 
   async onMessage(data: ITicketUpdatedEvent["data"], msg: Message) {
-    const ticket = await Ticket.findOne({
-      _id: data.id,
-      version: data.version - 1,
-    });
-
+    const ticket = await Ticket.findByEvent(data);
     if (!ticket) {
       // throw new Error("Ticket not found");   //This is making the service disconnect with NATS and then nothing will work?? //WTF is this... process.exit() is not restarting the service too!!!
 
