@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import "express-async-errors";
-
 import { natsWrapper } from "./nats-wrapper";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
