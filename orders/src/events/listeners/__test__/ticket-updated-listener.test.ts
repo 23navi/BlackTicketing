@@ -54,6 +54,7 @@ it("What will it do when ticket is not found?", async () => {
   const { listener, data2, msg } = await setup();
   await listener.onMessage(data2, msg);
   // for now it just logs ' This ticket was not processed and skipped'
+  expect(msg.ack).not.toHaveBeenCalled();
 });
 
 it("acks the message after successfully updating a ticket", async () => {
