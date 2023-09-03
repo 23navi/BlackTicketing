@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -43,6 +44,9 @@ const start = async () => {
 
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
+
+    //Listeners
+    new OrderCreatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.log("Cannot connect to Nats in Ticket Service");
     process.exit(1);
