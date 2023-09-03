@@ -45,6 +45,7 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
   } catch (err) {
     console.log("Cannot connect to Nats in Ticket Service");
+    process.exit(1);
     // console.error(err);
   }
 

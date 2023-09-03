@@ -13,6 +13,7 @@ const start = async () => {
     console.log("Auth Service: Connected to MongoDb");
   } catch (err) {
     console.error(err);
+    process.exit(1);
   }
 
   app.listen(3000, () => {
