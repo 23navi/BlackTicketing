@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 
 import { Ticket } from "../../model/ticket";
+import mongoose from "mongoose";
 
 it("fetches the order", async () => {
   // 0) Create an user
@@ -11,6 +12,7 @@ it("fetches the order", async () => {
   const user = global.signin();
 
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   });
