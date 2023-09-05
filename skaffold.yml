@@ -36,6 +36,15 @@ build:
           - dest: "src/**/*.ts"
             src: .
 
+    - image: navi23/blackticket-expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: "src/**/*.ts"
+            src: .
+
     - image: navi23/blackticket-orders
       context: orders
       docker:
