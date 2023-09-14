@@ -9,9 +9,15 @@ export class OrderCreatedListener extends BaseListener<OrderCreatedEvent> {
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
     console.log("Event data on Create from expiration service! ", data);
+    const delay = new Date(data.expiresAt).getTime() - new Date().getTime();
+    console.log(
+      "Waiting this many milliseconds to process the job: ",
+      delay,
+      " miliseconds"
+    );
 
     // Ack the message after saving the ticket
-    expirationQueue.add({ orderId: data.id });
+    expirationQueue.add({ orderId: data.id }, { delay });
     msg.ack();
   }
 }

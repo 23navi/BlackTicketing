@@ -13,7 +13,8 @@ import { OrderCreatedPublisher } from "../events/publishers/order-created-publis
 import { Ticket } from "../model/ticket";
 import { Order } from "../model/order";
 
-const EXPIRATION_SECONDS = 60 * 15; // 15 min
+// const EXPIRATION_SECONDS = 60 * 15; // 15 min
+const EXPIRATION_SECONDS = 10; // 10sec
 
 const router = express.Router();
 
