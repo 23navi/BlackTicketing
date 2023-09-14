@@ -16,6 +16,8 @@ spec:
         - name: expiration
           image: navi23/blackticket-expiration
           env:
+            - name: REDIS_HOST
+              value: expiration-redis-srv
             - name: NATS_URL
               value: "http://nats-srv:4222"
             - name: NATS_CLUSTER_ID
