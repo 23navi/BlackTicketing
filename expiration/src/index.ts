@@ -1,4 +1,5 @@
 import { natsWrapper } from "./nats-wrapper";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 
 const start = async () => {
   if (!process.env.NATS_URL) {
@@ -27,11 +28,12 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
 
     //Listeners
+    new OrderCreatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.log("Cannot connect to Nats in Expiration Service");
     process.exit(1);
     // console.error(err);
-  } 
+  }
 };
 
 start();
