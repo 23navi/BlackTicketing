@@ -1,4 +1,4 @@
-import { BaseListener, Subjects } from "@23navi/btcommon";
+import { BaseListener, Subjects, orderStatus } from "@23navi/btcommon";
 import { ExpirationCompletedEvent } from "@23navi/btcommon";
 import { Message } from "node-nats-streaming";
 import QUEUEGROUPNAME from "./queue-group-name";
@@ -18,7 +18,7 @@ export class ExpirationCompleteListener extends BaseListener<ExpirationCompleted
       if (!order) {
         console.log("Order not found!???");
       }
-      order?.set({ status: "cancelled" });
+      order?.set({ status: orderStatus.Cancelled });
       await order?.save();
     } catch (err) {
       console.log("Something went wrong on updating the order");

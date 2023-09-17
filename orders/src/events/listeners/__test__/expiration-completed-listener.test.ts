@@ -54,3 +54,19 @@ it("acks the message after successfully updating and publishing the event", asyn
   await listener.onMessage(data, msg);
   expect(msg.ack).toHaveBeenCalled();
 });
+
+it("publishes an event when order status is updated to cancelled", async () => {
+  const { listener, data, msg } = await setup();
+  await listener.onMessage(data, msg);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+
+  const orderUpdatedData = JSON.parse(
+    (natsWrapper.client.publish as jest.Mock).mock.calls[0][1]
+  );
+
+  console.log(orderUpdatedData);
+  expect(orderUpdatedData.id).toEqual(data.orderId);
+  const order = await Order.findById(data.orderId);
+  expect(order!.status).toEqual("cancelled");
+});
