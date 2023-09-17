@@ -106,3 +106,32 @@ it("returns 200 is the ticket is updated successfully", async () => {
   expect(response.body.title).toEqual("valid");
   expect(response.body.price).toEqual(70);
 });
+
+it("returns 400 is the ticket is reserved and the user tries to update it", async () => {
+  const cookie = global.signin();
+
+  const createdTicket = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "test-user1",
+      price: 50,
+    })
+    .expect(201);
+
+  const ticketId = createdTicket.body.id;
+
+  const ticket = await Ticket.findById(ticketId);
+  ticket!.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
+
+  await ticket!.save();
+
+  const response = await request(app)
+    .put(`/api/tickets/${ticketId}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "valid",
+      price: 70,
+    })
+    .expect(400);
+});

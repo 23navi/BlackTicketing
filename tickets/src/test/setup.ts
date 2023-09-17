@@ -27,6 +27,10 @@ beforeEach(async () => {
   }
 });
 
+afterEach(async () => {
+  jest.clearAllMocks();
+});
+
 afterAll(async () => {
   if (mongo) {
     await mongo.stop();

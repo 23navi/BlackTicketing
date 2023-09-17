@@ -1,33 +1,30 @@
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
-import { OrderCreatedEvent, orderStatus } from "@23navi/btcommon";
-import { OrderCreatedListener } from "../order-created-listener";
+import { OrderCancelledEvent, orderStatus } from "@23navi/btcommon";
+import { OrderCancelledListener } from "../order-cancelled-listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket } from "../../../model/ticket";
 
 const EXPIRATION_SECONDS = 60 * 15; // 15 min
 
 async function setup() {
-  const listener = new OrderCreatedListener(natsWrapper.client);
+  const listener = new OrderCancelledListener(natsWrapper.client);
   const ticket = Ticket.build({
     title: "test_title",
     price: 50,
     userId: new mongoose.Types.ObjectId().toHexString(),
   });
+  ticket.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
   await ticket.save();
 
   const expiration = new Date();
   expiration.setSeconds(expiration.getSeconds() + EXPIRATION_SECONDS);
 
-  const data: OrderCreatedEvent["data"] = {
+  const data: OrderCancelledEvent["data"] = {
     version: 0,
-    status: orderStatus.Created,
-    expiresAt: expiration.toISOString(),
     id: new mongoose.Types.ObjectId().toHexString(), //order Id
-    userId: ticket.userId,
     ticket: {
       id: ticket.id,
-      price: ticket.price,
     },
   };
 
@@ -38,12 +35,12 @@ async function setup() {
   return { listener, ticket, data, msg };
 }
 
-it("update the orderId of the ticket", async () => {
+it("update the orderId of the ticket to `undefined` ", async () => {
   const { listener, data, ticket, msg } = await setup();
   await listener.onMessage(data, msg);
 
   const updatedTicket = await Ticket.findById(ticket.id);
-  console.log({ updatedTicket });
+  expect(updatedTicket!.orderId).toBeUndefined();
 });
 
 it("acks the message after updating the ticket orderId", async () => {
@@ -52,7 +49,7 @@ it("acks the message after updating the ticket orderId", async () => {
   expect(msg.ack).toHaveBeenCalled();
 });
 
-it("publishes an event when ticket is updated on OrderCreated", async () => {
+it("publishes an event when ticket is updated on OrderCancelled", async () => {
   const { listener, data, msg } = await setup();
   await listener.onMessage(data, msg);
 
@@ -62,5 +59,5 @@ it("publishes an event when ticket is updated on OrderCreated", async () => {
     (natsWrapper.client.publish as jest.Mock).mock.calls[0][1]
   );
 
-  expect(data.id).toEqual(ticketUpdatedData.orderId);
+  expect(ticketUpdatedData.orderId).toBeUndefined();
 });
