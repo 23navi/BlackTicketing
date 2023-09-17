@@ -2,7 +2,6 @@ import { BaseListener, Subjects, orderStatus } from "@23navi/btcommon";
 import { ExpirationCompletedEvent } from "@23navi/btcommon";
 import { Message } from "node-nats-streaming";
 import QUEUEGROUPNAME from "./queue-group-name";
-import { Ticket } from "../../model/ticket";
 import { Order } from "../../model/order";
 import { OrderCancelledPublisher } from "../publishers/order-cancelled-publisher";
 
