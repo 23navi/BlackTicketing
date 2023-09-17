@@ -9,7 +9,8 @@ export abstract class BaseListener<T extends IEvent> {
 
   protected abstract onMessage(data: T["data"], msg: Message): void;
 
-  constructor(private client: Stan) {}
+  // we made client as protected so that we can access it in the subclass -> OrderCreatedListener can pass client to TicketUpdatedPublisher.
+  constructor(protected client: Stan) {}
 
   subscriptionOptions(): SubscriptionOptions {
     return this.client

@@ -5,7 +5,7 @@ import IEvent from "./Event";
 export abstract class BasePublisher<T extends IEvent> {
   public abstract subject: T["subject"];
 
-  constructor(private client: Stan) {}
+  constructor(protected client: Stan) {}
 
   //   public abstract data: T["data"];
 
