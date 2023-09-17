@@ -10,7 +10,7 @@ export class OrderCreatedListener extends BaseListener<OrderCreatedEvent> {
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
     console.log("Event data on Create! ", data);
-
+ 
     // 1 find the ticket with ticket id in data
     const ticket = await Ticket.findById(data.ticket.id);
 
