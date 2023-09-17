@@ -4,6 +4,7 @@ import {
   validateRequest,
   NotFoundError,
   NotAuthorizedError,
+  BadRequestError,
 } from "@23navi/btcommon";
 import { Ticket } from "../model/ticket";
 import { param, body } from "express-validator";
@@ -44,6 +45,10 @@ router.put(
 
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
+    }
+
+    if (ticket.orderId) {
+      throw new BadRequestError("Ticket is reserved and cannot be updated");
     }
 
     ticket.set({ ...ticket, title, price });

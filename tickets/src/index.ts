@@ -4,6 +4,7 @@ import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -47,6 +48,7 @@ const start = async () => {
 
     //Listeners
     new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
   } catch (err) {
     console.log("Cannot connect to Nats in Ticket Service");
     process.exit(1);
