@@ -54,6 +54,15 @@ build:
           - dest: "src/**/*.ts"
             src: .
 
+    - image: navi23/blackticket-payments
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: "src/**/*.ts"
+            src: .
+
 manifests:
   rawYaml:
     - ./infra/k8s/*
