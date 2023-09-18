@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 
 
 const start = async () => {
@@ -46,6 +48,8 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
 
     //Listeners
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
 
   } catch (err) {
     console.log("Cannot connect to Nats in Payment Service");

@@ -19,7 +19,10 @@ export class OrderCancelledListener extends BaseListener<OrderCancelledEvent> {
     console.log("Event data on Order Cancelled! ", data);
 
     // 1 find the order with order id in data
-    const order = await Order.findById(data.id);
+    const order = await Order.findOne({
+      id: data.id,
+      version: data.version - 1,
+    });
 
     // 2 if no order, throw error..
     if (!order) {
