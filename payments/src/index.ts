@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
-import { OrderCreatedListener } from "./events/listeners/order-created-listener";
-import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
+
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -26,9 +25,9 @@ const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL!);
 
-    console.log("Ticket Service: Connected to MongoDb");
+    console.log("Payment Service: Connected to MongoDb");
   } catch (err) {
-    console.log("Cannot connect to MongoDb from Tickets service");
+    console.log("Cannot connect to MongoDb from Payments service");
     console.error(err);
   }
   try {
@@ -37,9 +36,9 @@ const start = async () => {
       process.env.NATS_CLIENT_ID!,
       process.env.NATS_URL!
     );
-    console.log("Ticket Service: Connected to Nats");
+    console.log("Payment Service: Connected to Nats");
     natsWrapper.client.on("close", () => {
-      console.log("Nats connection closed in Ticket Service");
+      console.log("Nats connection closed in Payment Service");
       process.exit();
     });
 
@@ -47,16 +46,15 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
 
     //Listeners
-    new OrderCreatedListener(natsWrapper.client).listen();
-    new OrderCancelledListener(natsWrapper.client).listen();
+
   } catch (err) {
-    console.log("Cannot connect to Nats in Ticket Service");
+    console.log("Cannot connect to Nats in Payment Service");
     process.exit(1);
     // console.error(err);
   }
 
   app.listen(3000, () => {
-    console.log("Ticket Service: Listening on port 3000!");
+    console.log("Payment Service: Listening on port 3000!");
   });
 };
 
