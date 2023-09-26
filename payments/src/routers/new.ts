@@ -6,6 +6,7 @@ import {
   NotFoundError,
   BadRequestError,
   orderStatus,
+  NotAuthorizedError,
 } from "@23navi/btcommon";
 import { body } from "express-validator";
 import { natsWrapper } from "../nats-wrapper";
@@ -28,6 +29,17 @@ router.post(
   ],
   validateRequest, // To catch and throw errors caused by expressValidator
   async (req: Request, res: Response) => {
+    const { orderId, token } = req.body;
+    const order = await Order.findById(orderId);
+    if (!order) {
+      throw new NotFoundError();
+    }
+    if (order.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
+    if (order.status === orderStatus.Cancelled) {
+      throw new BadRequestError("Cannot pay for a cancelled order");
+    }
     return res.status(201).send({ success: true });
   }
 );
