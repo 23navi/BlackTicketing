@@ -16,9 +16,11 @@ export class TicketCreatedListener extends BaseListener<ITicketCreatedEvent> {
       price: data.price,
       title: data.title,
     });
-    console.log("This is workign");
+    console.log("This is working in orders service ticket-created listener");
     await ticket.save();
-    console.log("This is also workign");
+    console.log(
+      "This is also working in orders service ticket-created listener"
+    );
     msg.ack();
   }
 }

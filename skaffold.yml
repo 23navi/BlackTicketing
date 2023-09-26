@@ -55,7 +55,7 @@ build:
             src: .
 
     - image: navi23/blackticket-payments
-      context: orders
+      context: payments
       docker:
         dockerfile: Dockerfile
       sync:
