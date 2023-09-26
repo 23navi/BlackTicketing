@@ -26,7 +26,9 @@ export class OrderCancelledListener extends BaseListener<OrderCancelledEvent> {
 
     // 2 if no order, throw error..
     if (!order) {
-      throw new NotFoundError();
+      console.log("this is not working");
+      return;
+      // throw new NotFoundError();
     }
 
     //3 Update the order status to cancelled
