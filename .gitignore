@@ -2,3 +2,4 @@ node_modules
 secrets.txt
 # common
 .DS_Store
+coverage
